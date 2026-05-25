@@ -11,8 +11,10 @@ class Item extends Model
 
     protected $fillable = [
         'name',
+        'quantity',
         'stock',
         'category_id',
+        'price',
     ];
 
     public function category()

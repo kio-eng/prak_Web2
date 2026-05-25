@@ -10,7 +10,6 @@ Route::get('/hello', function () {
         'message' => 'Hello API'
     ]);
 });
+
 Route::apiResource('categories', CategoryController::class);
 Route::apiResource('items', ItemController::class);
-
-

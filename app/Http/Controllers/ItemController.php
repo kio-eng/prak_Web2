@@ -51,12 +51,21 @@ public function update(UpdateItemRequest $req, $id) {
         'message' => 'Item berhasil diperbarui'
     ]);
 }
-public function destroy($id) {
-    $this->svc->delete($id);
-    return response()->json([
-        'status' => 'success',
-        'data' => null,
-        'message' => 'Item berhasil dihapus'
-    ], 204);
+public function destroy($id)
+{
+    $item = Item::find($id);
+
+    if (!$item) {
+        return response()->json([
+            'message' => 'Not found'
+        ], 404);
     }
+
+    $item->delete();
+
+    return response()->json([
+        'message' => 'Deleted successfully'
+    ], 200);
+}
+
 }

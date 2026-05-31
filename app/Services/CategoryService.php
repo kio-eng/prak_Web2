@@ -1,4 +1,8 @@
 <?php
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
+
 class CategoryService { 
     public function all(): Collection { 
         return Category::all(); 

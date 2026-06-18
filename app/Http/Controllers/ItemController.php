@@ -1,5 +1,6 @@
 <?php
 namespace App\Http\Controllers;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemRequest;
 use App\Services\ItemService;
@@ -10,8 +11,14 @@ class ItemController extends BaseController{
     public function __construct(ItemService $svc){
         $this->svc = $svc;
 }
-    public function index(){
-        return $this->success($this->svc->all());
+    public function index(Request $req){
+        $items = $this->svc
+            ->all()
+            ->filter(fn($item) =>
+            !$req->category_id
+            || $item->category_id == $req->category_id
+            );
+            return $this->success($items);
 }
     public function store(StoreItemRequest $req){
         $item = $this->svc->create($req->validated());

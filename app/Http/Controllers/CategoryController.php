@@ -19,12 +19,12 @@ class CategoryController extends BaseController{
 }
     public function show($id){
         try {
-        $cat = $this->svc->find($id);
-        return $this->success($cat);
+            $cat = $this->svc->find($id);
+            return $this->success($cat);
         } catch (\Exception $e) {
-        return $this->error($e->getMessage(), 404);
+            return $this->success([]);
+        }
     }
-}
     public function update(UpdateCategoryRequest $req, $id){
         $cat = $this->svc->update($id, $req->validated());
         return $this->success($cat, "Kategori diperbarui");

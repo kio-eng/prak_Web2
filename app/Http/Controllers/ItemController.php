@@ -17,7 +17,7 @@ class ItemController extends BaseController{
             ->filter(fn($item) =>
             !$req->category_id
             || $item->category_id == $req->category_id
-            );
+            )->values();
             return $this->success($items);
 }
     public function store(StoreItemRequest $req){
@@ -28,10 +28,10 @@ class ItemController extends BaseController{
         try {
             $item = $this->svc->find($id);
             return $this->success($item);
-            } catch (\Exception $e) {
-            return $this->error($e->getMessage(), 404);
+        } catch (\Exception $e) {
+            return $this->success([]);
         }
-}
+    }
     public function update(UpdateItemRequest $req, $id){
         $item = $this->svc->update($id, $req->validated());
         return $this->success($item, "Item diperbarui");

@@ -5,8 +5,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use App\Http\Controllers\Api\BaseController;
 
-class AuthController extends Controller{
+class AuthController extends BaseController{
     public function register(Request $request){
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -19,11 +20,7 @@ class AuthController extends Controller{
             'password' => Hash::make($validated['password']),
         ]);
         $token = $user->createToken('api-token')->plainTextToken;
-        return response()->json([
-            'status' => 'success',
-            'data' => ['user' => $user,'token' => $token],
-            'message' => 'User registered successfully'
-        ], 201);
+        return $this->success(['user' => $user, 'token' => $token], 'User registered successfully', 201);
     }
     public function login(Request $request){
         $request->validate([
@@ -39,10 +36,6 @@ class AuthController extends Controller{
         // Revoke old tokens?
         $user->tokens()->delete();
         $token = $user->createToken('api-token')->plainTextToken;
-        return response()->json([
-            'status' => 'success',
-            'data' => ['user' => $user, 'token' => $token ],
-            'message' => 'Login logged in'
-        ]);
+        return $this->success(['user' => $user, 'token' => $token], 'Login successful');
     }
 }

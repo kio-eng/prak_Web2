@@ -22,6 +22,22 @@ return Application::configure(basePath: dirname(__DIR__))
         // Tangkap exception dan ubah responnya menjadi JSON seragam jika request diawali dengan api/
         $exceptions->render(function (\Throwable $e, \Illuminate\Http\Request $request) {
             if ($request->is('api/*')) {
+                if ($e instanceof \Illuminate\Validation\ValidationException) {
+                    return response()->json([
+                        'status' => 'error',
+                        'data' => $e->errors(),
+                        'message' => $e->getMessage(),
+                    ], $e->status);
+                }
+                
+                if ($e instanceof \Illuminate\Auth\AuthenticationException) {
+                    return response()->json([
+                        'status' => 'error',
+                        'data' => null,
+                        'message' => 'Unauthenticated.',
+                    ], 401);
+                }
+
                 return response()->json([
                     'status' => 'error',
                     'data' => null,
